@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--mate视口标签 适应设备宽度-->
+    <!--user-scalable 用户是否可以缩放-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,initial-scale=1.0,maximun-scale=1.0,
+    minimum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+    <!--引入css初始化文件-->
+    <link href="/static/css/normalize.css" rel='stylesheet' type='text/css' />
+    <link href="/static/css/addgoods.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>添加货物</title>
+
+    <style>
+        <!--按钮自定义样式-->
+        input{
+            -webkit-appearance:none;
+        }
+        <!--取消长按出现菜单-->
+        img,a{
+            -webkit-touch-callout:none;
+        }
+
+    </style>
+</head>
+
+    <body class="body" style="background-color: #12192c;">
+
+    <div class="content">
+        <h  style="font-size:25px; font-weight: bolder; color:#ffffff;">添加货物</h>
+        <form id="addgoodsform" name="addgoodsform"  method="POST" action="/app/addgoods_mobile_ok/" >
+            {% csrf_token %}
+            <!--<div class="add-boder">
+                <div class="image">
+                    <i class="glyphicon glyphicon-tag" style="font-size:18px;"></i>
+                </div>
+                <input class="input" type="text" id="addGoodsId" name="addGoodsId"  placeholder="输入货物id" required/>
+            </div> -->
+
+            <div class="add-boder" style="background-color: #ffffff;">
+                <div class="image">
+                    <i class="glyphicon glyphicon-pencil" style="font-size:18px;"></i>
+                </div>
+                <input class="input" style="background-color: #ffffff;" type="text" id="addGoodsName" name="addGoodsName"  placeholder="输入货物名称" required/>
+            </div> 
+
+            <!--货物类型-->
+            <div class="add-boder2">
+                <p>
+                    <label class="input_font" style="margin-left:2%; color: #ffffff;">货物类型：</label>
+                    <select class="dropdown" id="addGoodsType" name="addGoodsType"  required="required">
+                        <option value="食品">食品</option>
+                        <option value="服装">服装</option>
+                        <option value="生活用品">生活用品</option>
+                        <option value="办公用品">办公用品</option>
+                        <option value="生产用原材料">生产用原材料</option>
+                    </select>
+                </p>
+            </div>
+            
+            <div class="add-boder" style="background-color: #ffffff;">
+                <div class="image">
+                    <i class="glyphicon glyphicon-home" style="font-size:18px;"></i>
+                </div>
+                <input class="input" style="background-color: #ffffff;" type="text" id="addGoodsStore" name="addGoodsStore"  placeholder="输入所在仓库id" required/>
+            </div> 
+
+            <div class="add-boder" style="background-color: #ffffff;">
+                <div class="image">
+                    <i class="glyphicon glyphicon-th-large" style="font-size:18px;"></i>
+                </div>
+                <input class="input" style="background-color: #ffffff;" type="text" id="aaddGoodsAmount" name="addGoodsAmount"  placeholder="输入货物量" required/>
+            </div> 
+
+            <div class="add-boder" style="background-color: #ffffff;">
+                <div class="image">
+                    <i class="glyphicon glyphicon-list-alt" style="font-size:18px;"></i>
+                </div>
+                <input class="input" style="background-color: #ffffff;" type="text" id="addGoodsShelves" name="addGoodsShelves"  placeholder="输入货物所在货架" required minlength="10" maxlength="10"/>
+            </div> 
+
+            <div>
+                <button style="background-color: #ffffff;" class="btnsubmit">添加新货物</button>
+            </div>
+        </form>
+        <label class="success_msg" style="color: #ffffff; margin-top: 2%;">{{ success_msg }}</label>
+        <label class="error_msg" style="color: #ffffff; margin-top: 2%;">{{ error_msg }}</label>
+    </div>
+    
+</body>
+</html>

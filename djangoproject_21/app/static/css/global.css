@@ -1,0 +1,69 @@
+body{
+    font-size: 0.8em; 
+    font-family: 'Microsoft YaHei';
+    background-color: aliceblue;
+}
+
+.tooltip{
+    display: block;
+    margin-top: 5px;
+    color: rgb(141, 141, 141);
+}
+
+ul li{
+    margin-top: 10px;
+}
+
+.input_font{
+    font-size: 1.0em;
+    color: rgb(59, 59, 59);
+}
+
+input{
+    outline: none;
+}
+
+form{
+    margin-left: 20px;
+}
+
+.btnsubmit{
+    width: 80px;
+    height: 25px;
+    border:0px;
+    background-color: rgb(58, 115, 189);
+    color: aliceblue;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+.success_msg{
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: green;
+    margin-left: 20px;
+}
+
+.error_msg{
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: brown;
+    margin-left: 20px;
+}
+
+.imgstyle{
+    width: 100px;
+    height: 100px;
+    margin-top: 5px;
+    margin: 10px;
+}
+
+.t_title{
+    text-align:center;
+    font-weight: bold;
+}
+.t_content{
+    text-align: center;
+}

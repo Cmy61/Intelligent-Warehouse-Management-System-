@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--窗体自适应屏幕大小-->
+  <meta name="viewport" content="width=device-width">
+  {% load static %}
+</head>
+
+<body style="background-color: #f2f6ff;">
+    <!--标题为货架信息-->
+    <div style="background-color:#27496c; color:#ffffff; text-align:center; width:98%;  border-radius:5px;">
+    <h1>货架信息</h1>
+    </div>
+    <!--按钮区-->
+		<div class="buttondivShelves" style="margin-bottom: 5%; margin-right: 2%; text-align: right;">
+			<input type="button" title="返回上一页面" class="addButtonShelves" id="returnShelves" value="返回搜索页" onclick="location.href='/app/shelves_search/'"/>
+		</div>
+    <!-- 表格 -->
+    
+    <table style="table-layout:fixed;" width="100%" cellpadding="2">
+      <!--设置每一个单元格背景色及文字对齐方式高度等-->
+      
+      {% for shelf in lstShelves %}
+        <tr>
+            <td style="background-color:#557fb0; color:aliceblue; border-radius:5px; text-align:center; height:25px;">货架id</td>
+            <td style="text-align:center; border-radius:5px; background-color:#d9e6ff; height:25px;">{{ shelf.shelvesId }}
+                </td>
+            
+        </tr>
+        <tr>
+          <td style="background-color:#557fb0; color:aliceblue; border-radius:5px; text-align:center; height:25px;">货架编号</td>
+          <td style="text-align:center; border-radius:5px; background-color:#d9e6ff; height:25px;">{{ shelf.shelvesNum }}
+              </td>
+          
+        </tr>
+
+        <tr>
+          <td style="background-color:#557fb0; color:aliceblue; border-radius:5px; text-align:center; height:25px;">所属仓库</td>
+          <td style="text-align:center; border-radius:5px; background-color:#d9e6ff; height:25px;">{{ shelf.shelvesStore }}</td>
+              
+        </tr>
+        <tr>
+          <td style="background-color:#557fb0; color:aliceblue; border-radius:5px; text-align:center; height:25px;">所在区域</td>
+          <td style="text-align:center; border-radius:5px; background-color:#d9e6ff; height:25px;">{{ shelf.shelvesArea }}</td>
+              
+        </tr>
+
+        <tr>
+          <td style="background-color:#557fb0; color:aliceblue; border-radius:5px; text-align:center; height:25px;">存放物品种类</td>
+          <td style="text-align:center; border-radius:5px; background-color:#d9e6ff; height:25px;">{{ shelf.shelvesGoods }}</td>
+              
+        </tr>
+        <!-- <tr>
+          <td style="background-color:#205cca; color:aliceblue; text-align:center; height:25px;">存放物品数量</td>
+          <td style="text-align:center; background-color:#6495ed; height:25px;">50</td>
+              
+        </tr> -->
+        <tr>
+          <td style="background-color:#557fb0; color:aliceblue; border-radius:5px; text-align:center; height:25px;">是否消毒处理</td>
+          <td style="text-align:center; border-radius:5px; background-color:#d9e6ff; height:25px;" >{{ shelf.shelvesDisinfect }}</td>
+              
+        </tr>
+      {% endfor %}
+      </table>
+    <div>
+		
+	</body>
+</html>
+<style>
+  body{
+    width:100%;
+    height:100%;
+
+  }
+ 
+
+
+</style>
+      
+       
+       

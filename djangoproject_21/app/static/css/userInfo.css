@@ -1,0 +1,101 @@
+#InfoMaindiv{
+    width: 56%;
+    height: 96%;
+    float: left;
+    /* border: 2px solid rgb(202, 197, 197); */
+    padding:0%;
+    margin:1% 1% 3% 1%;
+}
+#InfoMain{
+    width: 49%;
+    margin-right: 1%;
+    height:50%;
+    float: left;
+    background-color: white;
+    border-radius:10px;
+    border: 1px solid rgb(202, 197, 197)
+}
+
+#InfoMainGoods{
+    width: 49%;
+    height:50%;
+    background-color:white;
+    float: left;
+    border-radius:10px;
+    border: 1px solid rgb(202, 197, 197)
+}
+#InfoImage{
+    width: 100%;
+    height:48%;
+    margin-top: 2%;
+    border-radius:10px;
+    float: left;
+    background-color: white;
+    border: 1px solid rgb(202, 197, 197)
+}
+
+#InfoModal{
+    /* margin-left: 25%;
+    margin-right: 25%; */
+    margin-bottom: 3%;
+    margin-top: 1%;
+    margin-right: 2%;
+    padding: 0%;
+    height: 96%;
+    background-color:  white;
+    float: right;
+    border-radius:4px;
+    border:1px solid rgb(202, 197, 197);
+    width: 40%;
+    
+}
+.Info{
+    margin-top: 0%;
+    margin-bottom: 3%;
+    padding-top: 5%;
+    height: 14%;
+}
+.Infoh2{
+    height: 50%;
+    margin: 0%;
+
+}
+.modal-bodyInfo{
+    margin: 0%;
+    padding: 0%;
+}
+/* #userInfop{
+margin-left: 200px;
+margin-right: 800px;
+border: 5px solid grey;
+border-radius: 5px;
+background:#12192c;
+color:white;
+font-size: 20px;
+animation: mymove 5s infinite;
+line-height:20px;
+transform:all 0.5s;
+}
+
+#userInfop:hover{
+    transform:scale(1.2);
+}
+
+#userInfoh3{
+color: #12192c;
+margin-left: 200px;
+font-weight: bold;
+letter-spacing: 0;
+text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 
+0px 3px 0px #777, 0px 4px 0px #666, 
+0px 5px 0px #555, 0px 6px 0px #444, 
+
+
+
+}
+
+
+@keyframes mymove {
+50% {border-color: lightblue;}
+} */
+

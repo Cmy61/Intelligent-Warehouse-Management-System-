@@ -1,0 +1,158 @@
+{%extends "home.html"%}
+{%block user %}active{% endblock %}
+{% load static %}
+{% block mainbody %}	
+
+    {% comment %} 数据可视化 {% endcomment %}
+     <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+    <div id="InfoMaindiv">
+        <div id="InfoMain"></div>
+        <div id="InfoMainGoods"></div>
+        <div id="InfoImage"> 
+          <img style="width: 100%; height: 100%;" src="{% static 'Image/vase.gif'%}">
+        </div>
+    </div>
+
+
+    <!--个人信息-->
+	<div id="InfoModal" class="InfoModal" >
+        <div class="Info" >
+            <!--<div class="modal-header">-->
+                <h2 class="Infoh2" style="text-align: center;">个人信息</h2>
+				<hr>
+                <!--<span id="updatecloseBtn" class="close">×</span>-->
+            </div>
+            <div class="modal-bodyInfo" style="text-align: center">
+                {% for key, value in data.items %}
+    
+                {{key}} :  
+                <input type="text" value="{{value}}" style=" height:35px;color: black ; border-radius: 6px; border:1px  solid rgb(202, 197, 197);"disabled="true"/><br/><br/>
+                
+                {% endfor %}
+			
+            </div>
+        </div>
+    </div>  
+    
+    <script type="text/javascript" >
+    var myChart = echarts.init(document.getElementById('InfoMain'));
+    var series_data = [];
+    var xAxis_data = [];
+// 指定图表的配置项和数据
+    {% for key, value in search_list.items %}
+        series_data.push({{value}})
+        xAxis_data.push("{{key}}")
+    {% endfor %}
+    var  
+    option = {
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '3%',
+        left: 'center'
+      },
+      series: [
+        {
+          name: '仓库分布',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          // emphasis: {
+          //   label: {
+          //     show: true,
+          //     fontSize: '40',
+          //     fontWeight: 'bold'
+          //   }
+          // },
+          labelLine: {
+            show: false
+          },
+          data: [
+          { value: series_data[0], name: xAxis_data[0] },
+          { value: series_data[1], name: xAxis_data[1] },
+          { value: series_data[2], name: xAxis_data[2] },
+          { value: series_data[3], name: xAxis_data[3] },
+          { value: series_data[4], name: xAxis_data[4] },
+          { value: series_data[5], name: xAxis_data[5] },
+          { value: series_data[6], name: xAxis_data[6] }
+          ]
+        }
+      ]
+    };
+
+// 使用刚指定的配置项和数据显示图表。
+
+myChart.setOption(option);
+
+</script>
+
+<script>
+var myChart = echarts.init(document.getElementById('InfoMainGoods'));
+var series_data = [];
+var xAxis_data = [];
+// 指定图表的配置项和数据
+{% for key, value in searchGoods_list.items %}
+    series_data.push({{value}})
+    xAxis_data.push("{{key}}")
+{% endfor %}
+var     option = {
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '3%',
+        left: 'center'
+      },
+      series: [
+        {
+          name: '物料类型',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          // emphasis: {
+          //   label: {
+          //     show: true,
+          //     fontSize: '40',
+          //     fontWeight: 'bold'
+          //   }
+          // },
+          labelLine: {
+            show: false
+          },
+          data: [
+          { value: series_data[0], name: xAxis_data[0] },
+          { value: series_data[1], name: xAxis_data[1] },
+          { value: series_data[2], name: xAxis_data[2] },
+          { value: series_data[3], name: xAxis_data[3] },
+          { value: series_data[4], name: xAxis_data[4] }
+          ]
+        }
+      ]
+    };
+
+// 使用刚指定的配置项和数据显示图表。
+
+myChart.setOption(option);
+</script>
+
+{% endblock %}
+

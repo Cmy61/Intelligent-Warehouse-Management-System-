@@ -1,0 +1,138 @@
+{%extends "home.html"%}
+{%block store %}active{% endblock %}
+{% load static %}
+{% block mainbody %}
+<!-- <!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/store.css' %}"/>
+	<script src="{% static 'js/store.js'%}"></script>
+	<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body> -->
+	<script>
+		$(function(){
+				$('#batchImport').change(function(){
+				// 使用Ajax实现文件上传操作
+				// 创建一个FormData对象，用于存放上传文件的数据
+				var form_data = new FormData();
+				// 读取上传文件的数据
+				var file_info = $("#batchImport")[0].files[0];
+				// 将读取到的二进制数据添加到formData对象中
+				form_data.append("file", file_info);
+				console.log("准备上传...")
+				// 使用Ajax发送异步请求并携带请求数据
+				$.ajax({
+					async: true,
+					data: form_data,
+					url: "/app/importStore/import/",
+					type: "post",
+					headers: {"X-CSRFToken":$.cookie("csrftoken")},
+					processData: false, //不序列化data
+					contentType: false, //不设置发送数据流的类型
+					success: function(data){
+						if(data == "True"){
+							alert("文件上传成功");
+						}
+						else{
+							alert("文件上传失败");
+						}
+					}
+				});
+			});
+		});
+	</script>
+
+	<div class="backgroundStore">
+		<!--标题栏-->
+		<div class="titleStore">仓库</div>
+		<div class="contentStore">
+			<!--按钮区-->
+			<div class="buttondivStore">
+				<input type="image" src="{%static 'Image/Search.png'%}" title="搜索" class="addButtonStore" id="findStore2" value="查找" onclick="javascript:inquiry2()"/>	
+			</div>
+			<!--表格展示区-->
+			<div class="TableStore">
+				<table id="tablelist" class="tablelist" style="width:100%;" cellpadding="0";cellspacing="0">
+					<tr class="StoreTr">
+						<td style="text-align:center;border-top-left-radius: 25px;">仓库id</td>
+						<td style="text-align:center;">仓库名称</td>
+						<td style="text-align:center;">仓库类型</td>
+						<td style="text-align:center;">仓库所在地</td>
+						<td style="text-align:center;">仓库容量</td>
+						<!-- <td style="text-align:center; border-top-right-radius: 25px;">已使用容量</td> -->
+						
+					</tr>
+					{% for store in lstStore %}       
+					<tr class="StoreTr2">
+						<td style="text-align:center; background-color:white; height:25px;">
+							<label style="font-weight:bold;">{{ store.storeId }}</label>
+						</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeName }}</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeType }}</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeLoca }}</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeCap }}</td>
+						<!-- <td style="text-align:center; background-color:white;">{{ store.storeExist }}</td> -->
+						
+					</tr>
+					{% empty %}
+					<tr>
+						<td colspan="5" style="text-align:center; background-color:white; height:25px;">
+								<label class="tooltip" style="color:black" >暂无数据</label>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	
+
+	
+
+	<!-- 查询仓库界面 -->
+	<div id="inquiryModal2" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2>查询仓库</h2>
+				<span id="inquirycloseBtn2" class="closeStore">×</span>
+			</div>
+			<div class="modal-body">
+				<form id="inquiryFrom" name="inquiryFrom" method="post" action="/app/searchStore_normal/search/">
+					{% csrf_token %}
+					<!-- <p>
+						<label class="input_font">仓库id：</label>
+						<input type="text" id="inquirystoreId" name="inquirystoreId"  value="请输入" placeholder="输入仓库id" />
+					</p> -->
+					<p>
+						<label class="input_font">仓库名称：</label>
+						<input type="text" id="inquirystoreName" name="inquirystoreName"  placeholder="输入仓库名称"/>
+					</p>
+                    <p>
+						<label class="input_font">仓库类型：</label>
+						<input type="text" id="inquirystoreType" name="inquirystoreType"  placeholder="输入仓库类型"/>
+					</p>
+                    <p>
+						<label class="input_font">仓库所在地：</label>
+						<input type="text" id="inquirystoreLoca" name="inquirystoreLoca"  placeholder="输入仓库所在地"/>
+					</p>
+					<p>
+						<button class="btnsubmit">查询仓库</button>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+{%endblock%}
+
+<!-- </body>
+</html> -->

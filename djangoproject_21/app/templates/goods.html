@@ -1,0 +1,232 @@
+{%extends "home.html"%}
+{%block goods %}active{% endblock %}
+{% load static %}
+{% block mainbody %}
+	<script>
+		$(function(){
+				$('#GoodsbatchImport').change(function(){
+				// 使用Ajax实现文件上传操作
+				// 创建一个FormData对象，用于存放上传文件的数据
+				var form_data = new FormData();
+				// 读取上传文件的数据
+				var file_info = $("#GoodsbatchImport")[0].files[0];
+				// 将读取到的二进制数据添加到formData对象中
+				form_data.append("file", file_info);
+				console.log("准备上传...")
+				// 使用Ajax发送异步请求并携带请求数据
+				$.ajax({
+					async: true,
+					data: form_data,
+					url: "/app/importGoods/import/",
+					type: "post",
+					headers: {"X-CSRFToken":$.cookie("csrftoken")},
+					processData: false, //不序列化data
+					contentType: false, //不设置发送数据流的类型
+					success: function(data){
+						if(data == "True"){
+							alert("文件上传成功");
+						}
+						else{
+							alert("文件上传失败");
+						}
+					}
+				});
+			});
+		});
+	</script>
+	<div class="backgroundStore">
+		<!--标题栏-->
+		<div class="titleStore">货物信息</div>
+		<div class="contentStore">
+			<!--按钮区-->
+			<div class="buttondivStore">
+				<input type="image" src="{%static 'Image/Search.png'%}" title="搜索" class="addButtonStore" id="findGoods" value="查找" onclick="javascript:Goodsinquiry()"/>
+				<input type="image" src="{%static 'Image/add.png'%}" title="添加" class="addButtonStore" id="addGoods"  value="添加" onclick="javascript:Goodsadd()"/>
+				<input type="image" src="{%static 'Image/return.png'%}" title="返回" class="addButtonStore" id="returnGoodsStore" value="返回展示页" onclick="javascript:history.back()"/>
+				<input type="image" src="{%static 'Image/download.png'%}" title="导出文件" class="addButtonStore" value="导出文件" onclick="location.href='/app/exportGoods/export/'"/>
+				<input type="file" id="GoodsbatchImport" title="导入文件" value="导入文件" accept=".xlsx,.xls"/>
+				<img src="{%static 'Image/upload.png'%}" title="上传文件" class="addButtonStore"></img>
+
+			</div>
+			<!--表格展示区-->
+			<div class="TableStore">
+				<table id="tablelistGoods" class="tablelist" style="width:100%;" cellpadding="0";cellspacing="0">
+					<tr class="StoreTr">
+						<td style="text-align:center;border-top-left-radius: 25px;">货物id</td>
+						<td style="text-align:center;">货物名称</td>
+						<td style="text-align:center;">货物类型</td>
+						<td style="text-align:center;">存放仓库</td>
+						<td style="text-align:center;">入库时间</td>
+						<td style="text-align:center;">货物量</td>
+						<td style="text-align:center;">所在货架</td>
+						<td style="text-align:center;border-top-right-radius: 25px;">操作</td>
+					</tr>
+					{% for goods in lstGoods %}      
+					<tr class="StoreTr2">
+						<td style="text-align:center; background-color:white; height:25px;">
+							<label style="font-weight:bold;">{{ goods.goodsId }}</label>
+						</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsName }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsType }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsStore }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsDate }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsAmount }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsShelves }}</td>
+						<td style="text-align:center; background-color:white;">
+							<input type="image" src="{%static 'Image/edit.png'%}"  title="编辑" id="GoddsUpdate" class="btnsubmit" style="background-color:white;color:black;" onclick="javascript:GoodsupdateAjax({{goods.goodsId}})" value="更新"/>
+							<input type="image" src="{%static 'Image/delete.png'%}"  title="删除" id="GoodsDelete" class="btnsubmit" style="background-color:white;color:black" onclick="javascript:deleteGoodsById({{ goods.goodsId }});"  value="删除" />
+						</td>
+					</tr>
+					{% empty %}
+					<tr>
+						<td colspan="8" style="text-align:center; background-color:white; height:25px;">
+								<label class="tooltip" style="color:black" >暂无数据</label>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	
+
+	<!-- 更新模态框 -->
+	<div id="updateModalGoods" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>更新货物信息</h2>
+                <span id="updatecloseBtnGoods" class="closeStore">×</span>
+            </div>
+            <div class="modal-body">
+                <form id="updateGoodsFrom" name="updateGoodsFrom" method="post" action="/app/updateGoods/update/">
+					{% csrf_token %}
+					<p>
+						<label class="input_font">货物id：</label>
+						<input type="text" id="updategoodsId1" name="updategoodsOther"  disabled="true"/>
+						<input type="hidden" id="updategoodsId2" name="updategoodsId"  />
+					</p>
+					<p>
+						<label class="input_font">货物名称：</label>
+						<input type="text" id="updategoodsName" name="updategoodsName"  placeholder="输入货物名称" required/>
+						
+					</p>
+					<p>
+						<label class="input_font">货物类型：</label>
+						<select class="dropdown" id="updategoodsType" name="updategoodsType">
+                            <!-- <option value="">无</option> -->
+							<option value="食品">食品</option>
+							<option value="服装">服装</option>
+							<option value="生活用品">生活用品</option>
+							<option value="办公用品">办公用品</option>
+							<option value="生产用原材料">生产用原材料</option>
+						</select>
+					</p>
+					<p>
+						<label class="input_font">所在仓库id：</label>
+						<input type="text" id="updategoodsStore1" name="updategoodsOther" disabled="true"/>
+						<input type="hidden" id="updategoodsStore2" name="updategoodsStore"  />
+					</p>
+					<p>
+						<label class="input_font">货物量：</label>
+						<input type="text" id="updategoodsAmount" name="updategoodsAmount"  placeholder="输入货物量（吨）" required/>
+					</p>
+					<p>
+						<label class="input_font">所在货架id：</label>
+						<input type="text" id="updategoodsShelves" name="updategoodsShelves"  placeholder="输入货物所在货架" maxlength="10" minlength="10" required/>
+						
+					</p>
+					<p>
+						<button class="btnsubmit">更新</button>
+					</p>
+				</form>
+            </div>
+        </div>
+    </div>  
+
+	
+
+	<!--添加货物界面--> 
+	<div id="myModalGoods" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>新增货物</h2>
+                <span id="closeBtnGoods" class="closeStore">×</span>
+            </div>
+            <div class="modal-body">
+                <form id="addGoodsFrom" name="addGoodsFrom" method="post" action="/app/addGoods/add/">
+					{% csrf_token %}
+					<p>
+						<label class="input_font">货物名称：</label>
+						<input type="text" id="addGoodsName" name="addGoodsName"  placeholder="输入货物名称" required/>
+					</p>
+					<p>
+						<label class="input_font">货物类型：</label>
+						<select class="dropdown" id="addGoodsType" name="addGoodsType"  required="required">
+							<option value="食品">食品</option>
+							<option value="服装">服装</option>
+							<option value="生活用品">生活用品</option>
+							<option value="办公用品">办公用品</option>
+							<option value="生产用原材料">生产用原材料</option>
+						</select>
+					</p>
+					<p>
+						<label class="input_font">所在仓库id：</label>
+                        <input type="text" id="addGoodsStore" name="addGoodsStore" placeholder="输入仓库id" required/>
+
+					</p>
+
+					<p>
+						<label class="input_font">货物量：</label>
+						<input type="text" id="addGoodsAmount" name="addGoodsAmount" placeholder="输入货物量" required/>
+					</p>
+					<p>
+						<label class="input_font">所在货架：</label>
+						<input type="text" id="addGoodsShelves" name="addGoodsShelves" placeholder="输入货物所在货架" required minlength="10" maxlength="10"/>
+					</p>
+					<p>
+						<button class="btnsubmit">添加新货物</button>
+					</p>
+				</form>
+				
+            </div>
+        </div>
+    </div>
+
+	
+
+	<!-- 查询货物界面 -->
+	<div id="inquiryModalGoods" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2>查询货物</h2>
+				<span id="inquirycloseBtnGoods" class="closeStore">×</span>
+			</div>
+			<div class="modal-body">
+				<form id="inquiryGoodsFrom" name="inquiryGoodsFrom" method="post" action="/app/searchGoods/search/">
+					{% csrf_token %}
+					<p>
+						<label class="input_font">货物名称：</label>
+						<input type="text" id="inquiryGoodsName" name="inquiryGoodsName" placeholder="输入货物名称"/>
+					</p>
+                    <p>
+						<label class="input_font">货物类型：</label>
+						<input type="text" id="inquiryGoodsType" name="inquiryGoodsType"  placeholder="输入货物类型"/>
+					</p>
+					<p>
+						<label class="input_font">所在货架id：</label>
+						<input type="text" id="inquiryGoodsAmount" name="inquiryGoodsShelves"  placeholder="输入货架id"/>
+					</p>
+                    <p>
+						<label class="input_font">存放仓库id：</label>
+						<input type="text" id="inquiryGoodsStore" name="inquiryGoodsStore" placeholder="输入存放仓库" required/>
+					</p>
+                   
+					
+					<p>
+						<button class="btnsubmit">查询货物</button>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+	{%endblock%}

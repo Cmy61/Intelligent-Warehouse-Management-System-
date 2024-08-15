@@ -1,0 +1,48 @@
+{%extends "home.html"%}
+{%block goods %}active{% endblock %}
+{% load static %}
+{% block mainbody %}
+	<div class="backgroundStore">
+		<!--标题栏-->
+		<div class="titleStore">货物存储仓库信息</div>
+		<div class="contentStore">
+			<!--表格展示区-->
+			<div class="TableGoodsStore">
+				<table id="tablelist2" class="tablelist" style="width:100%;" cellpadding="0";cellspacing="0">
+					<tr class="StoreTr">
+						<td style="text-align:center;border-top-left-radius: 25px;">仓库id</td>
+						<td style="text-align:center;">仓库名称</td>
+						<td style="text-align:center;">仓库类型</td>
+						<td style="text-align:center;">仓库所在地</td>
+						<td style="text-align:center;">仓库容量</td>
+						<!-- <td style="text-align:center;">已使用容量</td> -->
+						<td style="text-align:center;border-top-right-radius: 25px;">操作</td>
+					</tr>
+					{% for store in lstStore %}       
+					<tr class="StoreTr2">
+						<td style="text-align:center; background-color:white; height:25px;">
+							<label style="font-weight:bold;">{{ store.storeId }}</label>
+						</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeName }}</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeType }}</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeLoca }}</td>
+						<td style="text-align:center; background-color:white;">{{ store.storeCap }}</td>
+						<!-- <td style="text-align:center; background-color:white;">{{ store.storeExist }}</td> -->
+						<td style="text-align:center; background-color:white;">
+							<input type="image" src="{%static 'Image/look.png'%}" title="查看" id="btnGoods2" class="btnsubmit" style="background-color:white;color:black" onclick="javascript:GoodsById2({{ store.storeId }});" value="查看"/>
+						</td>
+					</tr>
+					{% empty %}
+					<tr>
+						<td colspan="6" style="text-align:center; background-color:white; height:25px;">
+								<label class="tooltip" style="color:black" >暂无数据</label>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	
+
+{%endblock%}

@@ -1,0 +1,244 @@
+html,body{
+    height: 100%;
+}
+body{
+    margin: 0%;
+}
+
+td{
+    width: 60px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.backgroundStore{   
+    height: 100%;
+    width: 99.5%;
+    padding: 0%;
+    margin: 0%;
+    background-color: #f0f1f4;
+    /* background-color:rgb(245, 244, 244); */
+    
+}
+.titleStore{
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-left: 0%;
+    /* background-color:white; */
+    padding-top: 1%;
+    font-size: 24px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 800;
+    height: 8%;
+    color:black; 
+    border-bottom: #ccc;
+
+}
+
+.contentStore{
+    margin-top: 1.25%;
+    margin-bottom: 0%;
+    margin-left: 2%;
+    margin-right: 2%;
+    height: 90%;
+    background-color: #f0f1f4;
+}
+.buttondivStore{
+    margin-top: 0%;
+    margin-bottom: 1.25%;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    background-color:#f0f1f4;
+    height: 3%;
+}
+.TableStore{
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding:0%;
+    height: 93%;
+    background-color: white ;
+    border-top-left-radius:25px;
+    border-top-right-radius: 25px;
+}
+
+.TableGoodsStore{
+    margin-top: 0%;
+    margin-bottom: 1.25%;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding:0%;
+    height: 93%;
+    background-color: white ;
+    border-top-left-radius:25px;
+    border-top-right-radius: 25px;
+}
+
+.StoreTr{
+    background-color: #585169;
+    color: white;
+    height: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:nowrap ;
+    font-size: 14px;
+}
+.StoreTr2{
+    border-top:2px solid #f0f1f4;
+}
+
+.TableGoodsStore{
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+    height: 100%;
+    background-color: white;
+}
+
+/* 按钮样式 */
+.addButtonStore{
+    margin-left: 2%;
+    background-color:transparent ;
+    outline-style: none ;
+    width: 2%;	
+    float:left;
+}
+.btnsubmit{
+    margin-left:10%;
+    background-color:transparent ;
+    color: black;
+    outline-style: none ;
+    width: 15%;	
+    
+}
+#btnGoods{
+    margin-left: 5%;
+    background-color:transparent ;
+    outline-style: none ;
+    width: 15%;
+}
+
+#returnStore{
+    outline-style: none ;
+    padding: 0%;
+    margin-top: 0%;
+    margin-right: 0%;
+    margin-bottom: 0.25%;
+    width: 2%;
+    background-color:transparent ;
+    float:left;
+}
+
+#returnGoods{
+    outline-style: none ;
+    padding: 0%;
+    margin-top: 0%;
+    margin-right: 0%;
+    margin-bottom: 0.25%;
+    width: 2%;
+    background-color:transparent ;
+    float:left;
+}
+
+#batchImport{
+    position: absolute;
+    opacity: 0;
+    margin-left: 11%;
+}
+#GoodsbatchImport{
+    position: absolute;
+    opacity: 0;
+    margin-left: 14%;
+}
+
+/* .addButton2{
+    margin-top: 6%;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-width:1px;
+    background-color:white ;
+    color: black;
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 5px 5px;
+    width: 30%;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: "Microsoft soft";	
+}
+.addButton3{
+    margin-top: 6%;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-width:1px;
+    background-color:white ;
+    color: black;
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 5px 5px;
+    width: 30%;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: "Microsoft soft";	
+} */
+
+/* 模态框样式 */
+/*模态框*/
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed; /* 根据浏览器定位 */
+    z-index: 1; /* 放在顶部 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 全宽 */
+    height: 100%; /* 全高 */
+    overflow: auto; /* 允许滚动 */
+    background-color: rgba(0,0,0,0.4); /* 背景色 */
+}
+/*模态框内容*/
+.modal-content {
+    display: flex; /*采用flexbox布局*/
+    flex-direction: column; /*垂直排列*/
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto; /*距顶部5% 水平居中*/
+    padding: 0%;
+    border: 1px solid #888;
+    width: 30%;
+    animation: topDown 0.4s; /*自定义动画，从模态框内容上到下出现*/
+}
+@keyframes topDown {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+/*模态框头部*/
+.modal-header {
+    height: 5%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    display: flex; /*采用flexbox布局*/
+    flex-direction: row; /*水平布局*/
+    align-items: center; /*内容垂直居中*/
+    justify-content: space-between; 
+}
+/*关闭X 样式*/
+.closeStore {
+    margin-left: 40%;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.closeStore:hover {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+

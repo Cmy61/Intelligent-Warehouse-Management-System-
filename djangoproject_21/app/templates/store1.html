@@ -1,0 +1,632 @@
+{%extends home.html%}
+{%block store1%}active{%endblock%}
+{% load static %}
+    
+
+{% block mainbody %}
+{% block verbatim %}
+	<div class="background">
+		
+		<div class="title">仓库</div>
+		<div class="buttondiv">
+			<input type="button" class="addButton1" id="batchImport" value="批量导入" onclick="batchImport()"/>
+			<input type="button" class="addButton2" id="findStore" value="查找仓库信息" onclick="inquiry()"/>
+			<input type="button" class="addButton3" id="addStore"  value="添加仓库信息" onclick="add()"/>
+		</div>
+		<div class="contentStore">
+			<table id="tablelist" style="width:100%;" cellpadding="0";cellspacing="0">
+				<tr>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">仓库id</td>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">仓库名称</td>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">仓库类型</td>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">仓库所在地</td>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">仓库容量</td>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">已使用容量</td>
+					<td style="background-color:#ecf0f7; color:black; text-align:center; height:25px;">操作</td>
+				</tr>
+				{% for store in lstStore %}       
+				<tr>
+					<td style="text-align:center; background-color:white; height:25px;">
+						<label style="font-weight:bold;">{{ store.storeId }}</label>
+					</td>
+					<td style="text-align:center; background-color:white;">{{ store.storeName }}</td>
+					<td style="text-align:center; background-color:white;">{{ store.storeType }}</td>
+					<td style="text-align:center; background-color:white;">{{ store.storeLoca }}</td>
+					<td style="text-align:center; background-color:white;">{{ store.storeCap }}</td>
+					<td style="text-align:center; background-color:white;">{{ store.storeExist }}</td>
+					<td style="text-align:center; background-color:white;">
+						<input type="button" id="btnUpdate" class="btnsubmit" style="background-color:white;color:black;" onclick="updateAjax({{store.storeId}})" value="更新"/>
+						<button type="button" id="btnDelete" class="btnsubmit" style="background-color:white;color:black" onclick="deleteDeptById({{ store.storeId }});">删除</button>
+					</td>
+				</tr>
+				{% empty %}
+				<tr>
+					<td colspan="7" style="text-align:center; background-color:white; height:25px;">
+							<label class="tooltip" style="color:black" >暂无数据</label>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+	
+
+	<!-- 更新模态框 -->
+	 <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>更新仓库</h2>
+                <span id="updatecloseBtn" class="close">×</span>
+            </div>
+            <div class="modal-body">
+                <form id="updateDeptFrom" name="updateDeptFrom" method="post" action="/app/updateStore/update/">
+					{% csrf_token %}
+					<p>
+						<label class="input_font">仓库编号：</label>
+						<!-- <label class="tooltip" id="updatestoreId" style="font-weight:bold">{{ store.storeId }}</label> -->
+						 <!-- 设置一个隐藏域存放部门编号  -->
+						<input type="text" id="updatestoreId" name="updatestoreId" value="{{ store.storeId }}" disabled="true"/>
+					</p>
+					<p>
+						<label class="input_font">仓库名称：</label>
+						<input type="text" id="updatestoreName" name="updatestoreName" value="{{ store.storeName }}" placeholder="输入仓库名称" required/>
+					</p>
+					<p>
+						<label class="input_font">仓库类型：</label>
+						<input type="text" id="updatestoreType" name="updatestoreType" value="{{ store.storeType }}" placeholder="输入仓库类型" required/>
+					</p>
+					<p>
+						<label class="input_font">仓库所在地：</label>
+						<input type="text" id="updatestoreLoca" name="updatestoreLoca" value="{{ store.storeLoca }}" placeholder="输入仓库所在地" required/>
+					</p>
+					<p>
+						<label class="input_font">仓库容量：</label>
+						<input type="text" id="updatestoreCap" name="updatestoreCap" value="{{ store.storeCap }}" placeholder="输入仓库容量（吨）" required/>
+					</p>
+					<p>
+						<label class="input_font">已使用容量：</label>
+						<input type="text" id="updatestoreExist" name="updatestoreExist" value="{{ store.storeExist }}" placeholder="输入仓库已使用容量（吨）" required/>
+					</p>
+					<p>
+						<button class="btnsubmit">更新</button>
+					</p>
+				</form>
+            </div>
+        </div>
+    </div>  
+
+	
+
+	<!--添加仓库界面-->
+	<div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>新增仓库</h2>
+                <span id="closeBtn" class="close">×</span>
+            </div>
+            <div class="modal-body">
+                <form id="addDeptFrom" name="addDeptFrom" method="post" action="/app/addStore/add/">
+					{% csrf_token %}
+					<p>
+						<label class="input_font">仓库id：</label>
+						<input type="text" id="addstoreId" name="storeId"  placeholder="输入仓库id" required/>
+					</p>
+					<p>
+						<label class="input_font">仓库名称：</label>
+						<input type="text" id="addstoreName" name="storeName"  placeholder="输入仓库名称" required/>
+					</p>
+					<p>
+						<label class="input_font">仓库类型：</label>
+						<select class="dropdown" id="addstoreType" name="storeType"  required="required">
+							<option value="大仓库">大仓库</option>
+							<option value="中仓库">中仓库</option>
+							<option value="小仓库">小仓库</option>
+						</select>
+					</p>
+					<p>
+						<label class="input_font">仓库所在地：</label>
+						<select class="dropdown" id="addstoreLoca" name="storeLoca" required="required">
+							<option value="重庆">重庆</option>
+							<option value="四川">四川</option>
+							<option value="北京">北京</option>
+							<option value="上海">上海</option>
+						</select>
+					</p>
+					<p>
+						<label class="input_font">仓库容量：</label>
+						<input type="text" id="addstoreCap" name="storeCap"  placeholder="输入仓库容量（吨）" required/>
+					</p>
+					<p>
+						<label class="input_font">已使用容量：</label>
+						<input type="text" id="addstoreExist" name="storeExist" placeholder="输入仓库已使用容量（吨）" required/>
+					</p>
+					<p>
+						<button class="btnsubmit">添加新仓库</button>
+					</p>
+				</form>
+				
+            </div>
+        </div>
+    </div>
+
+	<!--查询仓库界面-->
+	<div id="inquiryModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2>查询仓库</h2>
+				<span id="inquirycloseBtn" class="close">×</span>
+			</div>
+			<div class="modal-body">
+				<form id="inquiryFrom" name="inquiryFrom" method="post" action="/app/searchStore/search/">
+					{% csrf_token %}
+					<p>
+						<label class="input_font">仓库id：</label>
+						<input type="text" id="inquirystoreId" name="inquirystoreId"  placeholder="输入仓库id" />
+					</p>
+					<p>
+						<label class="input_font">仓库名称：</label>
+						<input type="text" id="inquirystoreName" name="inquirystoreName"  placeholder="输入仓库名称"/>
+					</p>
+					<!-- <p>
+						<label class="input_font">仓库类型：</label>
+						<select class="dropdown" id="inquirystoreType" name="inquirystoreType">
+                            <option value="">无</option>
+							<option value="大仓库">大仓库</option>
+							<option value="中仓库">中仓库</option>
+							<option value="小仓库">小仓库</option>
+						</select>
+					</p> -->
+                    <p>
+						<label class="input_font">仓库类型：</label>
+						<input type="text" id="inquirystoreType" name="inquirystoreType"  placeholder="输入仓库类型"/>
+					</p>
+					<!-- <p>
+						<label class="input_font">仓库所在地：</label>
+						<select class="dropdown" id="inquirystoreLoca" name="inquirystoreLoca">
+                            <option value="">无</option>
+							<option value="重庆">重庆</option>
+							<option value="四川">四川</option>
+							<option value="北京">北京</option>
+							<option value="上海">上海</option>
+						</select>
+					</p> -->
+                    <p>
+						<label class="input_font">仓库所在地：</label>
+						<input type="text" id="inquirystoreLoca" name="inquirystoreLoca"  placeholder="输入仓库所在地"/>
+					</p>
+					<p>
+						<button class="btnsubmit">查询仓库</button>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endverbatim %}
+
+<style>
+html,body{
+    height: 100%;
+}
+body{
+    margin: 0%;
+}
+
+td{
+    font-size: 18px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border: 1px solid #888;
+}
+.background{   
+    height: 100%;
+    padding: 0%;
+    margin: 0%;
+    background-color:rgb(245, 244, 244);
+    
+}
+.title{
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 2%;
+    margin-right: 2%;
+    background-color: rgb(245, 244, 244);
+    padding-top: 1%;
+    font-size: 25px;
+    height: 8%;
+    color: black;
+    
+}
+.buttondiv{
+    margin-top: -4%;
+    margin-bottom: 0%;
+    margin-left: 65%;
+    margin-right: 1%;
+    padding-right: 0%;
+    padding-bottom: 0%;
+    background-color: rgb(245, 244, 244);
+    height: 8%;
+    
+    
+}
+.contentStore{
+    margin-top: 1%;
+    margin-bottom: 0%;
+    margin-left: 2%;
+    margin-right: 2%;
+    height: 90%;
+    background-color: white;
+}
+
+/* 按钮样式 */
+.addButton1{
+    margin-top: 6%;
+    margin-right: 0px;
+    background-color:white ;
+    color: black;
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 5px 5px;
+    width: 30%;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: "Microsoft soft";		
+}
+.addButton2{
+    margin-top: 6%;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-width:1px;
+    background-color:white ;
+    color: black;
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 5px 5px;
+    width: 30%;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: "Microsoft soft";	
+}
+.addButton3{
+    margin-top: 6%;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-width:1px;
+    background-color:white ;
+    color: black;
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 5px 5px;
+    width: 30%;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: "Microsoft soft";	
+}
+
+
+/*模态框*/
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed; /* 根据浏览器定位 */
+    z-index: 1; /* 放在顶部 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 全宽 */
+    height: 100%; /* 全高 */
+    overflow: auto; /* 允许滚动 */
+    background-color: rgba(0,0,0,0.4); /* 背景色 */
+}
+/*模态框内容*/
+.modal-content {
+    display: flex; /*采用flexbox布局*/
+    flex-direction: column; /*垂直排列*/
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto; /*距顶部5% 水平居中*/
+    padding: 0%;
+    border: 1px solid #888;
+    width: 30%;
+    animation: topDown 0.4s; /*自定义动画，从模态框内容上到下出现*/
+}
+@keyframes topDown {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+/*模态框头部*/
+.modal-header {
+    height: 5%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    display: flex; /*采用flexbox布局*/
+    flex-direction: row; /*水平布局*/
+    align-items: center; /*内容垂直居中*/
+    justify-content: space-between; 
+}
+/*关闭X 样式*/
+.close {
+    margin-left: 40%;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+</style>
+
+<script>
+    //添加仓库模态框函数
+function add(){
+    /*建立模态框对象*/
+    modalBox = {};
+    /*获取模var态框*/
+    modalBox.modal = document.getElementById("myModal");
+    /*获得更新按钮*/
+    modalBox.triggerBtn = document.getElementById("addStore");
+    /*获得关闭按钮*/
+    modalBox.closeBtn = document.getElementById("closeBtn");
+    /*模态框显示*/
+    modalBox.show = function() {
+        console.log(this.modal);
+        this.modal.style.display = "block";
+    }
+    /*模态框关闭*/
+    modalBox.close = function() {
+        this.modal.style.display = "none";
+        this.modal.on('hidden.bs.modal', function (){
+            document.getElementById("contentForm").reset();
+        });
+    }
+    /*当用户点击模态框内容之外的区域，模态框也会关闭*/
+    modalBox.outsideClick = function() {
+        var modal = this.modal;
+        window.onclick = function(event) {
+            if(event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+    /*模态框初始化*/
+    modalBox.init = function() {
+        var that = this;
+        this.triggerBtn.onclick = function() {
+            that.show();
+        }
+        this.closeBtn.onclick = function() {
+            that.close();
+        }
+        this.outsideClick();
+
+    }
+    modalBox.init();
+}
+
+// 编写函数完成指定数据删除请求的发送
+function deleteDeptById(storeId){
+    console.log("删除仓库编号:" + storeId);
+    // 使用js提示对话框
+    if(confirm("确定删除数据吗?")){
+        // 删除数据，发送删除的url请求
+        url = "/app/deleteStore/delete/" + storeId;
+        console.log(url);
+        // 发送GET请求
+        window.location = url;
+    }
+}
+
+//查找仓库模态框函数
+function inquiry(){
+    /*建立模态框对象*/
+    modalBox = {};
+    /*获取模var态框*/
+    modalBox.modal = document.getElementById("inquiryModal");
+    /*获得查询按钮*/
+    modalBox.triggerBtn = document.getElementById("findStore");
+    /*获得关闭按钮*/
+    modalBox.closeBtn = document.getElementById("inquirycloseBtn");
+    
+    /*模态框显示*/
+    modalBox.show = function() {
+        console.log(this.modal);
+        this.modal.style.display = "block";
+    }
+    /*模态框关闭*/
+    modalBox.close = function() {
+        this.modal.style.display = "none";
+    }
+    /*当用户点击模态框内容之外的区域，模态框也会关闭*/
+    modalBox.outsideClick = function() {
+        var modal = this.modal;
+        window.onclick = function(event) {
+            if(event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+    /*模态框初始化*/
+    modalBox.init = function() {
+        var that = this;
+        this.triggerBtn.onclick = function() {
+            that.show();
+        }
+        this.closeBtn.onclick = function() {
+            that.close();
+        }
+        this.outsideClick();
+    }
+    modalBox.init();
+}
+
+//更新仓库模态框函数
+function updateAjax(storeId){
+    $.ajax({
+        async: true,
+        url: "/app/transStore/trans/"+storeId,
+        type: "post",
+        headers: {"X-CSRFToken":$.cookie("csrftoken")},
+
+        success: function(store){
+            console.log(store);
+            /*建立模态框对象*/
+            modalBox = {};
+            /*获取模var态框*/
+            modalBox.modal = document.getElementById("updateModal");
+            /*获得更新按钮*/
+            modalBox.triggerBtn = document.getElementById("tablelist");
+            /*获得关闭按钮*/
+            modalBox.closeBtn = document.getElementById("updatecloseBtn");
+            /* */
+            modalBox.inputId = document.getElementById("updatestoreId");
+            modalBox.inputName = document.getElementById("updatestoreName");
+            modalBox.inputType = document.getElementById("updatestoreType");
+            modalBox.inputLoca = document.getElementById("updatestoreLoca");
+            modalBox.inputCap = document.getElementById("updatestoreCap");
+            modalBox.inputExist = document.getElementById("updatestoreExist");
+
+            modalBox.inputId.value=store.showstoreId;
+            modalBox.inputName.value=store.showstoreName;
+            modalBox.inputType.value=store.showstoreType;
+            modalBox.inputLoca.value=store.showstoreLoca;
+            modalBox.inputCap.value=store.showstoreCap;
+            modalBox.inputExist.value=store.showstoreExist;
+
+            /*模态框显示*/
+            modalBox.show = function() {
+                console.log(this.modal);
+                this.modal.style.display = "block";
+            }
+            /*模态框关闭*/
+            modalBox.close = function() {
+                this.modal.style.display = "none";
+            }
+            /*当用户点击模态框内容之外的区域，模态框也会关闭*/
+            modalBox.outsideClick = function() {
+                var modal = this.modal;
+                window.onclick = function(event) {
+                    if(event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+            /*模态框初始化*/
+            modalBox.init = function() {
+                var that = this;
+                
+                this.triggerBtn.onclick = function() {
+                    
+                    that.show();
+                    
+                }
+                this.closeBtn.onclick = function() {
+                    that.close();
+                }
+                this.outsideClick();
+            }
+            modalBox.init();
+        }
+        
+    });
+        
+}
+
+// function update(store){
+//     /*建立模态框对象*/
+//     modalBox = {};
+//     /*获取模var态框*/
+//     modalBox.modal = document.getElementById("updateModal");
+//     /*获得更新按钮*/
+//     modalBox.triggerBtn = document.getElementById("tablelist");
+//     /*获得关闭按钮*/
+//     modalBox.closeBtn = document.getElementById("updatecloseBtn");
+//     /* */
+//     modalBox.inputId = document.getElementById("updatestoreId");
+//     modalBox.inputName = document.getElementById("updatestoreName");
+//     modalBox.inputType = document.getElementById("updatestoreType");
+//     modalBox.inputLoca = document.getElementById("updatestoreLoca");
+//     modalBox.inputCap = document.getElementById("updatestoreCap");
+//     modalBox.inputExist = document.getElementById("updatestoreExist");
+
+//     /*模态框显示*/
+//     modalBox.show = function() {
+//         console.log(this.modal);
+//         this.modal.style.display = "block";
+//     }
+//     /*模态框关闭*/
+//     modalBox.close = function() {
+//         this.modal.style.display = "none";
+//     }
+//     /*当用户点击模态框内容之外的区域，模态框也会关闭*/
+//     modalBox.outsideClick = function() {
+//         var modal = this.modal;
+//         window.onclick = function(event) {
+//             if(event.target == modal) {
+//                 modal.style.display = "none";
+//             }
+//         }
+//     }
+//     /*模态框初始化*/
+//     modalBox.init = function(store) {
+//         var that = this;
+//         this.triggerBtn.onclick = function(store) {
+//             that.inputId=store.storeId;
+//             that.inputName=store.storeName;
+//             that.inputType=store.storeType;
+//             that.inputLoca=store.storeLoca;
+//             that.inputCap=store.storeCap;
+//             that.inputExist=store.storeExist;
+//             that.show();
+//         }
+//         this.closeBtn.onclick = function() {
+//             that.close();
+//         }
+//         this.outsideClick();
+//     }
+//     modalBox.init();
+// }
+
+
+
+function batchImport(){
+    // 使用Ajax实现文件上传操作
+    // 创建一个FormData对象，用于存放上传图片的数据
+    var form_data = new FormData();
+    // 读取上传图片的数据
+    var file_info = $("#batchImport")[0].files[0];
+    // 将读取到的二进制数据添加到formData对象中
+    form_data.append("file", file_info);
+    // 使用Ajax发送异步请求并携带请求数据
+    $.ajax({
+        async: true,
+        url: "#",
+        type: "post",
+        headers: {"X-CSRFToken":$.cookie("csrftoken")},
+        data: form_data,
+        processData: false,
+        contentType: false,
+        success: function(data){
+            alert("上传成功！");
+        }
+    });
+
+}
+
+
+
+</script>
+
+
+
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% endblock %}

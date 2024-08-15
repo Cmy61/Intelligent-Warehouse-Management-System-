@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+        <title>注册</title>
+        {%load static%}
+		<link href="/static/css/login_reglogin.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+            //function myFunction()
+                
+                var Infousername=document.getElementById("username").value;
+                localStorage.setItem("Infousername", JSON.stringify(Infousername));
+                //document.getElementById("result").innerHTML = localStorage.getItem("test");
+                var Infopassword=document.getElementById("password").value;
+                localStorage.setItem("Infopassword", JSON.stringify(Infopassword));
+
+                var Infoname=document.getElementById("name").value;
+                localStorage.setItem("Infoname", JSON.stringify(Infoname));
+
+                var Infoage=document.getElementById("age").value;
+                localStorage.setItem("Infoage", JSON.stringify(Infoage));
+
+                var Infonums=document.getElementById("nums").value;
+                localStorage.setItem("Infonums", JSON.stringify(Infonums));
+
+                var Infotel=document.getElementById("tel").value;
+                localStorage.setItem("Infotel", JSON.stringify(Infotel));
+
+                var Infoaddress=document.getElementById("address").value;
+                localStorage.setItem("Infoaddress", JSON.stringify(Infoage));
+
+                var Infowork=document.getElementById("work").value;
+                localStorage.setItem("Infowork", JSON.stringify(Infowork));
+            
+        </script>
+
+        <!-- 验证用户名唯一性 -->
+        <script>
+            username.onblur = function () {
+         
+                $.post(
+                    "/admin/isname",
+                    { user_name: username.value,aeg:18},
+                    function (data) {
+                        if (data.code=="400"){
+                            $("#p1").html("用户名已被注册，请重新输入!").css("color","red");
+                        }else {
+                            $("#p1").html("用户名可用").css("color","green");
+                        }
+                    });
+            };
+         
+        </script>
+
+
+</head>
+<body style="background-color:#12192c">
+		<!--<div class="bg">
+				<img src="/static/images/background2.png" alt="">
+			</div>-->
+
+	<div id='test'></div>
+
+	<div class="main">
+        <!--注册表单-->
+        <form id="registform" name="registform"  method="POST" action="/app/register/">
+		<div class="header" >
+			<h1>创建一个新账户</h1>
+		</div>
+        {% csrf_token %}
+		<p></p>
+				<ul class="left-form">
+                <label>用户名：</label>
+                <li>
+                    <input type="text" class="username" id="username" name="username" placeholder="请输入用户名(最长为11位)"  required maxlength="11"/>
+                                <div class="clear"> </div>
+                </li>
+                <label>密码：</label>        
+                <li>
+                <input type="password" class="password" id="password" name="password" placeholder="请输入密码(长度为6-11位)" required minlength="6" maxlength="11"/>
+						<div class="clear"> </div></li>
+                <label>姓名：</label>
+                <li>
+                    <input type="text" class="text" id="name" name="name" placeholder="请输入姓名" required/>
+                                        <div class="clear"> </div>
+                </li>            
+                <label>年龄：</label>
+                <li>
+                    <input type="text" class="text" id="age" name="age" placeholder="请输入年龄" required/>
+                                        <div class="clear"> </div>
+                </li>
+            
+
+            <strong>性别：</strong>
+            <input type="radio" name="gender" id="gender1" value="男" checked>男
+            <input type="radio" name="gender" id="gender2" value="女">女
+            <div class="clear"> </div>
+            <br/>
+            <label>工号：</label>
+            <li>
+                <input type="text" class="text" id="nums" name="nums" placeholder="请输入工号" required minlength="5" maxlength="5"/>
+                                    <div class="clear"> </div>
+            </li>   
+            <label>电话：</label>
+            <li>
+                <input type="text" class="text" id="tel" name="tel" placeholder="请输入电话" required minlength="11" maxlength="11"/>
+                                    <div class="clear"> </div>
+            </li>   
+            <label>地址：</label>
+            <li>
+            <input type="text" class="text" id="address" name="address" placeholder="请输入地址" required/>
+                        <div class="clear"> </div>
+            </li>
+
+
+             <li>
+                <strong>部门：</strong>
+                <select id="department" name="department" value="1">
+                    <option value="1">销售部</option>
+                    <option value="2">研发部</option>
+                    <option value="3">策划部</option>
+                </select>
+            <br>
+            </li>
+            <label>岗位：</label>
+            <li>
+            <input type="text" class="text" id="work" name="work" placeholder="请输入岗位" required/>
+                        <div class="clear"> </div>
+            </li>
+                <li>
+                <strong>请选择角色类型：</strong>
+                <input type="radio" name="usertype" id="usertype1" value="普通员工" checked>普通员工
+                <input type="radio" name="usertype" id="usertype3" value="仓库管理员">仓库管理员
+                </li>
+            <br/>
+
+            <br/>
+            <li style="border:none">
+                <div style="text-align:center">
+                    <!--<button onclick="myFunction()">保存</button></div>-->
+                <div style="text-align:center">
+				<input type="submit" value="立即注册" class="btn btn-block btn-primary" >
+                </div>
+            </form>
+                    <div style="text-align:right">
+                    <br/><u><a href="/app/login/">已有账号，立即登录</a></u></div>
+                    <div style="text-align:right">
+                        <!--<br/><u><a href="/app/show/">查看</a></u></div>-->
+            </li>
+
+				</ul>
+				<div class="clear"> </div>
+        
+        
+        <label class="regi_success_msg">{{ regi_success_msg }}</label>
+        <label class="regi_error_msg">{{ regi_error_msg }}</label>
+        
+	</div>
+</body>
+</html>

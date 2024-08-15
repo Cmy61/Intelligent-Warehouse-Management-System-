@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--窗体自适应屏幕大小-->
+  <meta name="viewport" content="width=device-width">
+
+</head>
+
+<body style="background-color: #f2f6ff;">
+    <form id="shelSearch" name="shelSearch"  method="POST" action="/app/shelvesinformation/">
+    {% csrf_token %}
+    <!--标题-->
+    <div style="background-color:#27496c; color:#ffffff; text-align:center; width:98%; height: 40%; border-radius:5px;">
+        <h1>查询货架信息</h1>
+    </div>
+    <div style="text-align: center; height: 80%;">
+      <input type="text" class="text" id="sNum" name="sNum" placeholder="请输入待查询货架的编号" required/>
+      <input type="submit" value="查询" class="btn btn-block btn-primary">
+    </div>
+    </form>
+</body>
+
+</html>
+<style>
+  body{
+    width:100%;
+    height:100%;
+  }
+</style>

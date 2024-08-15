@@ -1,0 +1,52 @@
+{%extends "home.html"%}
+{%block goods %}active{% endblock %}
+{% load static %}
+{% block mainbody %}
+</head>
+<body>
+	<div class="backgroundStore">
+		
+		<div class="titleStore">货物信息搜索结果</div>
+		<div class="contentStore">
+			<div class="buttondivStore">
+				<input type="image" src="{% static 'Image/return.png' %}" title="返回上一页面" class="addButtonStore" id="returnStore2" onclick="javascript:self.location=document.referrer;"/>
+			</div>
+			<div class="TableStore">
+				<table id="tablelist2" class="tablelist" style="width:100%;" cellpadding="0";cellspacing="0">
+					<tr class="StoreTr">
+						<td style="text-align:center; border-top-left-radius: 25px;">货物id</td>
+						<td style="text-align:center;">货物名称</td>
+						<td style="text-align:center;">货物类型</td>
+						<td style="text-align:center;">货物所在仓库</td>
+						<td style="text-align:center;">入库时间</td>
+						<td style="text-align:center;">货物量</td>
+						<td style="text-align:center;border-top-right-radius: 25px;">所在货架</td>
+					</tr>
+
+					{% for goods in lstGoods %}       
+					<tr class="StoreTr2">
+						<td style="text-align:center; background-color:white; height:25px;">
+							<label style="font-weight:bold;">{{ goods.goodsId }}</label>
+						</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsName }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsType }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsStore }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsDate }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsAmount }}</td>
+						<td style="text-align:center; background-color:white;">{{ goods.goodsShelves }}</td>
+					</tr>
+					{% empty %}
+					<tr>
+						<td colspan="7" style="text-align:center; background-color:white; height:25px;">
+								<label class="tooltip" style="color:black" >暂无数据</label>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	{%endblock%}
+
+

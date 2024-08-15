@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓库管理系统</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="/static/css/element.css">
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/axios.js"></script>
+    <script src="/static/js/helper.js"></script>
+    <script src = "/static/js/jquery-3.6.0.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/store.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/userInfo.css' %}"/>
+    <script src="{% static 'js/goods.js'%}"></script>
+	<script src="{% static 'js/store.js'%}"></script>
+    <script src="{% static 'js/goods_normal.js'%}"></script>
+    <script src="{% static 'js/store_normal.js'%}"></script>
+    <script src="{% static 'js/echarts.min.js'%}"></script>
+	<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body id="body-pd">
+    <div class="l-navbar" id="navbar">
+        <!--导航栏-->
+        <nav class="nav">
+            <div>
+                <div class="nav_brand">
+                    <!-- <ion-icon name="menu-outline" class="nav_toggle" id="nav_toggle"></ion-icon> -->
+                    <ion-icon name="menu-outline" class="nav_toggle" id="nav-toggle"></ion-icon>
+
+                    <a href="#" class="nav_logo">仓库管理系统</a>
+                </div>
+                <!--功能列表-->
+                <div class="nav_list">
+               
+                    <a href="/app/user"  class="nav_link {% block user %}{% endblock %}">
+                        <ion-icon name="chatbubbles-outline" class="nav_icon" ></ion-icon>
+                        <span class="nav_name">主页</span>
+                    </a>
+                   
+                    <a href="/app/cloud" class="nav_link {% block cloud %}{% endblock %}">
+                        <ion-icon name="chatbubbles-outline" class="nav_icon" ></ion-icon>
+                        <span class="nav_name">可视化大屏</span>
+                    </a>
+
+                    <a href="/app/trans_store" class="nav_link {% block store %}{% endblock %}">
+                        <ion-icon name="chatbubbles-outline" class="nav_icon" ></ion-icon>
+                        <span class="nav_name">仓库管理</span>
+                    </a>
+                    <a href="/app/trans_goods" class="nav_link {% block goods %}{% endblock %}">
+                        <ion-icon name="chatbubbles-outline" class="nav_icon" ></ion-icon>
+                        <span class="nav_name">物料管理</span>
+                    </a>
+
+                    <a href="{% url 'get_unread_notifications' %}" class="nav_link {% block notifications_unread %}{% endblock %}">
+                        <ion-icon name="chatbubbles-outline" class="nav_icon" ></ion-icon>
+                        <span class="nav_name">通知管理</span>
+                    </a>
+
+                    
+                    <!-- <a href="#" class="nav_link {% block index3 %}{% endblock %}">
+                        <ion-icon name="settings-outline" class="nav_icon" ></ion-icon>
+                        <span class="nav_name">设置</span>
+                    </a> -->
+                    
+                </div>
+            </div>
+            <!--退出登录-->
+            <a href="/app/logout" class="nav_link">
+                <ion-icon name="log-out-outline" class="nav_icon" ></ion-icon>
+                <span class="nav_name">退出登陆</span>
+            </a>
+        </nav>
+    </div>
+    <div class="content" >
+        {% block mainbody %}
+        {% endblock %}
+
+    </div>
+    
+    
+</body>
+<script>
+    let userInfo = window.localStorage.getItem("store_management_userInfo")
+    if (userInfo) {
+      userInfo = JSON.parse(userInfo)
+      document.getElementById('user-name').innerHTML = userInfo.name
+    }
+</script>
+<script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+<!-- <script src="/static/js/index.js"></script> -->
+</html>
